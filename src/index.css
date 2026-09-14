@@ -473,19 +473,21 @@ button {
   align-items: center;
   padding: 14px 30px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   color: var(--text-white);
   font-size: 15px;
   font-weight: 500;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   transition: all 0.3s var(--ease-out-cubic);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.32);
   transform: translateY(-2px);
-  box-shadow: none;
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.4);
 }
 
 .btn-secondary:active {
@@ -631,9 +633,12 @@ button {
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: #0d1424;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -647,7 +652,7 @@ button {
   width: 20px;
   height: 20px;
   transform: rotate(-45deg) translate(1px, -1px);
-  filter: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
 /* =========================================
@@ -661,14 +666,20 @@ button {
   transform-style: preserve-3d;
 }
 
-/* Service Card Base (Clean Dark Matte Finish) */
+/* Service Card Base (Pure Frosted Glass) */
 .service-card {
   position: absolute;
-  background: #090e1a;
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--bg-card);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--border-card);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 22px;
   padding: 24px;
-  box-shadow: none;
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 15px 0 rgba(255, 255, 255, 0.02);
   cursor: pointer;
   transform-style: preserve-3d;
   will-change: transform, border-color, opacity;
@@ -680,16 +691,30 @@ button {
     filter 0.4s var(--ease-out-cubic);
 }
 
-/* Glossy reflection sheen overlay removed for matte finish */
+/* Glossy reflection sheen overlay */
 .service-card::before {
-  display: none;
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.03) 22%,
+    transparent 55%
+  );
+  pointer-events: none;
 }
 
 /* Hover state on cards */
 .service-card:hover {
-  background: #0e1526;
-  border-color: rgba(56, 189, 248, 0.4);
-  box-shadow: none;
+  background: var(--bg-card-hover);
+  border-color: var(--border-card-hover);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  border-left-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 20px 0 rgba(0, 150, 255, 0.08);
   z-index: 20 !important;
 }
 
@@ -779,7 +804,7 @@ button {
   transition: color 0.3s ease;
 }
 
-/* Card Action Button (chevron circle - Matte) */
+/* Card Action Button (chevron circle) */
 .card-action-btn {
   position: absolute;
   bottom: 22px;
@@ -787,9 +812,12 @@ button {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -798,14 +826,14 @@ button {
 }
 
 .service-card:hover .card-action-btn {
-  background: #0070f3;
-  border-color: #0070f3;
+  background: rgba(0, 112, 243, 0.9);
+  border-color: rgba(56, 189, 248, 0.6);
   color: #ffffff;
   transform: scale(1.08) translateX(2px);
-  box-shadow: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
 }
 
-/* Card Specific Positions & Aesthetics (Dark Matte Finish) */
+/* Card Specific Positions & Aesthetics */
 
 /* 1. Web Development Card (Top Left) */
 .card-web {
@@ -814,16 +842,20 @@ button {
   width: 280px;
   z-index: 6;
   opacity: 0;
-  background: #090e1a;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 110, 255, 0.14) 0%,
+    rgba(14, 25, 52, 0.32) 40%,
+    rgba(6, 14, 32, 0.48) 100%
+  );
   animation: 
     cardEntrance 1s var(--ease-out-cubic) 0.45s forwards,
     cardFloat1 6.8s ease-in-out infinite 1.45s;
 }
 
 .card-web .card-icon-box {
-  background: #0f1c36;
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  color: #38bdf8;
+  background: linear-gradient(135deg, #0055ff 0%, #0099ff 100%);
+  color: #ffffff;
 }
 
 /* 2. App Development Card (Top Right) */
@@ -833,16 +865,20 @@ button {
   width: 295px;
   z-index: 5;
   opacity: 0;
-  background: #090e1a;
+  background: linear-gradient(
+    135deg,
+    rgba(120, 50, 255, 0.14) 0%,
+    rgba(20, 18, 55, 0.32) 40%,
+    rgba(8, 12, 34, 0.48) 100%
+  );
   animation: 
     cardEntrance 1s var(--ease-out-cubic) 0.65s forwards,
     cardFloat2 7.6s ease-in-out infinite 1.65s;
 }
 
 .card-app .card-icon-box {
-  background: #141733;
-  border: 1px solid rgba(129, 140, 248, 0.25);
-  color: #a5b4fc;
+  background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 50%, #6366f1 100%);
+  color: #c7d2fe;
 }
 
 /* 3. Digital Marketing Card (Bottom Center / Right) */
@@ -852,20 +888,24 @@ button {
   width: 305px;
   z-index: 7;
   opacity: 0;
-  background: #090e1a;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 180, 255, 0.12) 0%,
+    rgba(12, 24, 52, 0.32) 40%,
+    rgba(6, 14, 34, 0.48) 100%
+  );
   animation: 
     cardEntrance 1s var(--ease-out-cubic) 0.85s forwards,
     cardFloat3 8.2s ease-in-out infinite 1.85s;
 }
 
 .card-marketing .card-icon-box {
-  background: #0d2235;
-  border: 1px solid rgba(0, 210, 255, 0.25);
-  color: #00d2ff;
+  background: linear-gradient(135deg, #0062ff 0%, #00b4d8 100%);
+  color: #ffffff;
 }
 
 /* =========================================
-   CLIENT TRUST BADGE (50+ Happy Clients - Matte)
+   CLIENT TRUST BADGE (50+ Happy Clients)
    ========================================= */
 .client-badge {
   position: absolute;
@@ -874,9 +914,12 @@ button {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: #090e1a;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: none;
+  background: rgba(12, 22, 44, 0.45);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
   padding: 8px 16px 8px 12px;
   z-index: 10;
@@ -886,7 +929,7 @@ button {
 }
 
 .client-badge:hover {
-  background: #0e1628;
+  background: rgba(16, 28, 54, 0.92);
   border-color: rgba(56, 189, 248, 0.35);
   transform: translateY(-2px);
   box-shadow: none;
@@ -1395,8 +1438,6 @@ button {
   position: relative;
   overflow: hidden;
   box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   transition: 
     transform 0.35s var(--ease-out-cubic),
     border-color 0.35s var(--ease-out-cubic),
@@ -1432,29 +1473,30 @@ button {
   background: #0f172a;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: none;
-  transition: transform 0.35s var(--ease-out-cubic), border-color 0.35s ease;
+  transition: transform 0.35s var(--ease-out-cubic), border-color 0.35s ease, filter 0.35s ease;
 }
 
 .service-icon-wrapper.icon-web {
   color: #38bdf8;
-  background: rgba(0, 102, 255, 0.08);
-  border-color: rgba(56, 189, 248, 0.2);
+  background: rgba(0, 102, 255, 0.1);
+  border-color: rgba(0, 150, 255, 0.22);
 }
 
 .service-icon-wrapper.icon-app {
   color: #a5b4fc;
-  background: rgba(99, 102, 241, 0.08);
-  border-color: rgba(129, 140, 248, 0.2);
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(129, 140, 248, 0.22);
 }
 
 .service-icon-wrapper.icon-design {
   color: #00d2ff;
-  background: rgba(0, 210, 255, 0.08);
-  border-color: rgba(56, 189, 248, 0.2);
+  background: rgba(0, 210, 255, 0.1);
+  border-color: rgba(56, 189, 248, 0.22);
 }
 
 .service-item-card:hover .service-icon-wrapper {
   transform: scale(1.04);
+  filter: drop-shadow(0 0 10px rgba(0, 132, 255, 0.4));
 }
 
 .service-number {
