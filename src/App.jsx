@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import OrbitsGraphic from './components/OrbitsGraphic';
 import ServiceCard from './components/ServiceCard';
 import ClientBadge from './components/ClientBadge';
+import ServicesSection from './components/ServicesSection';
 
 export default function App() {
   // Smooth mouse parallax state with LERP (Linear Interpolation)
@@ -268,44 +269,8 @@ export default function App() {
         </section>
       </main>
 
-      {/* Subtle downstream section to demonstrate smooth scroll and header transition */}
-      <section
-        id="services-overview"
-        style={{
-          minHeight: '60vh',
-          padding: '120px 48px 80px',
-          maxWidth: '1440px',
-          margin: '0 auto',
-          position: 'relative',
-          zIndex: 10,
-        }}
-      >
-        <div
-          style={{
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-            paddingTop: '64px',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '32px',
-          }}
-        >
-          <div style={{ padding: '24px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <span style={{ color: '#0080FF', fontSize: '13px', fontWeight: '700', letterSpacing: '0.1em' }}>01 / ENGINEERING</span>
-            <h3 style={{ fontSize: '20px', fontWeight: '700', marginTop: '12px', marginBottom: '8px', color: '#fff' }}>Cloud & Full-Stack</h3>
-            <p style={{ color: '#8E9CB0', fontSize: '14px', lineHeight: '1.6' }}>High-performance web applications, enterprise ERP platforms, and microservices crafted with modern tech.</p>
-          </div>
-          <div style={{ padding: '24px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <span style={{ color: '#7928CA', fontSize: '13px', fontWeight: '700', letterSpacing: '0.1em' }}>02 / EXPERIENCE</span>
-            <h3 style={{ fontSize: '20px', fontWeight: '700', marginTop: '12px', marginBottom: '8px', color: '#fff' }}>Mobile & UI/UX Design</h3>
-            <p style={{ color: '#8E9CB0', fontSize: '14px', lineHeight: '1.6' }}>Native iOS, Android, and cross-platform experiences that delight users and drive real business metrics.</p>
-          </div>
-          <div style={{ padding: '24px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <span style={{ color: '#00D2FF', fontSize: '13px', fontWeight: '700', letterSpacing: '0.1em' }}>03 / GROWTH</span>
-            <h3 style={{ fontSize: '20px', fontWeight: '700', marginTop: '12px', marginBottom: '8px', color: '#fff' }}>Digital Performance</h3>
-            <p style={{ color: '#8E9CB0', fontSize: '14px', lineHeight: '1.6' }}>Data-driven marketing, SEO, conversion rate optimization, and brand scaling strategies.</p>
-          </div>
-        </div>
-      </section>
+      {/* Services Section */}
+      <ServicesSection />
     </div>
   );
 }
