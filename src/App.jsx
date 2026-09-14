@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import OrbitsGraphic from './components/OrbitsGraphic';
 import ServiceCard from './components/ServiceCard';
 import ClientBadge from './components/ClientBadge';
+import CollaborationsSection from './components/CollaborationsSection';
 import ServicesSection from './components/ServicesSection';
 
 export default function App() {
@@ -268,6 +269,9 @@ export default function App() {
           </div>
         </section>
       </main>
+
+      {/* Trusted Collaborations Section */}
+      <CollaborationsSection />
 
       {/* Services Section */}
       <ServicesSection />
