@@ -3,7 +3,7 @@ export default function ServicesSection() {
     {
       number: '01',
       title: 'Web Development',
-      description: 'Scalable, secure websites and web applications built for performance.',
+      description: 'Scalable, secure websites, enterprise platforms, and cloud web applications engineered for speed, robust architecture, and high conversion.',
       iconVariant: 'icon-web',
       icon: (
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +37,7 @@ export default function ServicesSection() {
     {
       number: '02',
       title: 'App Development',
-      description: 'Modern mobile applications designed for seamless user experiences.',
+      description: 'High-performance iOS and Android mobile applications crafted with modern native frameworks, fluid animations, and seamless user experiences.',
       iconVariant: 'icon-app',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +69,7 @@ export default function ServicesSection() {
     {
       number: '03',
       title: 'UI/UX Design',
-      description: 'Thoughtful, intuitive interfaces designed around real user needs.',
+      description: 'Intuitive, user-centered digital interfaces, design systems, and interactive prototypes built to solve complex problems and elevate brands.',
       iconVariant: 'icon-design',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,17 +92,10 @@ export default function ServicesSection() {
         
         {/* Section Header */}
         <div className="services-header">
-          {/* Eyebrow Label with flanking horizontal rules */}
-          <div className="services-eyebrow">
-            <span className="eyebrow-line" aria-hidden="true"></span>
-            <span className="eyebrow-text">OUR SERVICES</span>
-            <span className="eyebrow-line" aria-hidden="true"></span>
-          </div>
 
           {/* Main Heading */}
           <h2 className="services-title" id="services-heading">
-            Digital solutions built <br />
-            for <span className="highlight-blue">modern businesses.</span>
+            Built for <span className="highlight-blue">Digital Growth</span><span className="title-dot">.</span>
           </h2>
 
           {/* Supporting Text */}
