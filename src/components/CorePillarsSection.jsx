@@ -5,19 +5,16 @@ const pillars = [
     number: '01',
     title: 'High Performance',
     description: 'Engineered for speed, stability and seamless user experiences.',
-    linkHref: '#services',
   },
   {
     number: '02',
     title: 'Highly Secure',
     description: 'Built with reliable technology and security-focused practices to protect data and business continuity.',
-    linkHref: '#services',
   },
   {
     number: '03',
     title: 'Fast Development',
     description: 'Agile, efficient and focused on delivering scalable digital solutions faster.',
-    linkHref: '#services',
   },
 ];
 
@@ -27,12 +24,6 @@ function CorePillarsSection() {
       <div className="pillars-container">
         {/* Centered Section Header */}
         <div className="pillars-header">
-          <div className="pillars-eyebrow" aria-hidden="true">
-            <span className="pillars-eyebrow-line"></span>
-            <span className="pillars-eyebrow-text">// OUR CORE PILLARS</span>
-            <span className="pillars-eyebrow-line"></span>
-          </div>
-
           <h2 className="pillars-title" id="pillars-heading">
             Built for <span className="pillars-title-accent">Excellence.</span>
           </h2>
@@ -58,28 +49,6 @@ function CorePillarsSection() {
 
                 {/* Muted Blue-Gray Description */}
                 <p className="pillar-description">{pillar.description}</p>
-              </div>
-
-              {/* Bottom Minimal Link */}
-              <div className="pillar-card-bottom">
-                <a href={pillar.linkHref} className="pillar-learn-link">
-                  <span>Learn more</span>
-                  <span className="pillar-arrow" aria-hidden="true">
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </span>
-                </a>
               </div>
             </article>
           ))}
