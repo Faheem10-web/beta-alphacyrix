@@ -1673,15 +1673,18 @@ button {
   transform: translateY(-4px);
 }
 
-/* Image Container - Increased Height & Aspect Ratio */
+/* Image Container - Very Small Fine Border */
 .trustedby-image-wrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 11.5;
-  border-radius: 18px;
+  border-radius: 20px;
   overflow: hidden;
   background: #040814;
   margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 .trustedby-image {
@@ -1694,6 +1697,11 @@ button {
 
 .trustedby-card:hover .trustedby-image {
   transform: scale(1.03);
+}
+
+.trustedby-card:hover .trustedby-image-wrapper {
+  border-color: rgba(56, 189, 248, 0.38);
+  box-shadow: 0 20px 44px -10px rgba(0, 0, 0, 0.75), 0 0 24px -6px rgba(0, 112, 243, 0.22);
 }
 
 /* Content: Tag & Title on Left, View Button on Right */
