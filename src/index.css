@@ -1699,11 +1699,6 @@ button {
   transform: scale(1.03);
 }
 
-.trustedby-card:hover .trustedby-image-wrapper {
-  border-color: rgba(56, 189, 248, 0.6);
-  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.85), 0 0 24px -4px rgba(0, 112, 243, 0.3);
-}
-
 /* Content: Tag & Title on Left, View Button on Right */
 .trustedby-content {
   display: flex;
