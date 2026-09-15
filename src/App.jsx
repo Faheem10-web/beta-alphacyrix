@@ -270,11 +270,11 @@ export default function App() {
         </section>
       </main>
 
-      {/* Trusted Collaborations Section */}
-      <CollaborationsSection />
-
       {/* Services Section */}
       <ServicesSection />
+
+      {/* Trusted Collaborations Section */}
+      <CollaborationsSection />
     </div>
   );
 }
