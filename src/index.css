@@ -2028,7 +2028,7 @@ button {
   transform: translate(-50%, 0);
   width: 900px;
   height: 500px;
-  background: radial-gradient(ellipse 65% 45% at 50% 50%, rgba(14, 55, 125, 0.16) 0%, rgba(3, 7, 18, 0) 70%);
+  background: radial-gradient(ellipse 65% 45% at 50% 50%, rgba(14, 55, 125, 0.04) 0%, rgba(3, 7, 18, 0) 70%);
   filter: blur(40px);
 }
 
@@ -2249,36 +2249,33 @@ button {
   background: rgba(6, 11, 24, 0.72);
   border: 1px solid rgba(56, 189, 248, 0.12);
   box-shadow: 
-    0 16px 36px -10px rgba(0, 0, 0, 0.55),
-    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    0 10px 24px -6px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.04);
 }
 
 .process-card:not(.is-featured):hover .process-card-inner {
   background: rgba(10, 18, 36, 0.85);
-  border-color: rgba(56, 189, 248, 0.35);
+  border-color: rgba(56, 189, 248, 0.28);
   box-shadow: 
-    0 24px 48px -10px rgba(0, 0, 0, 0.75),
-    0 0 24px rgba(0, 132, 255, 0.12),
-    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    0 14px 28px -6px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
 }
 
-/* FEATURED CARD (Step 02) — Rich Alphacyrix Blue Gradient */
+/* FEATURED CARD (Step 02) — Clean, Refined Alphacyrix Blue Gradient */
 .process-card.is-featured .process-card-inner {
   background: linear-gradient(155deg, #1d4ed8 0%, #1e40af 45%, #0d1e44 100%);
-  border: 1px solid rgba(147, 197, 253, 0.38);
+  border: 1px solid rgba(147, 197, 253, 0.28);
   box-shadow: 
-    0 24px 48px -8px rgba(0, 132, 255, 0.35),
-    0 0 30px rgba(0, 132, 255, 0.2),
-    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    0 12px 28px -6px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }
 
 .process-card.is-featured:hover .process-card-inner {
   background: linear-gradient(155deg, #2563eb 0%, #1d4ed8 45%, #0e224e 100%);
-  border-color: rgba(191, 219, 254, 0.5);
+  border-color: rgba(191, 219, 254, 0.38);
   box-shadow: 
-    0 28px 56px -8px rgba(0, 132, 255, 0.45),
-    0 0 38px rgba(0, 132, 255, 0.28),
-    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    0 16px 32px -6px rgba(0, 0, 0, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
 /* Subtle Card Top Glare */
