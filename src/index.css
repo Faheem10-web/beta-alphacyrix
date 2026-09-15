@@ -2114,8 +2114,7 @@ button {
 .process-header-right {
   display: flex;
   align-items: flex-end;
-  gap: 48px;
-  max-width: 560px;
+  max-width: 440px;
   opacity: 0;
   transform: translateY(20px);
   transition: 
@@ -2134,55 +2133,6 @@ button {
   color: #94a3b8;
   font-weight: 400;
   margin: 0;
-}
-
-/* Action Badge: Circle Arrow + OUR PROCESS */
-.process-action-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.process-arrow-btn {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.03);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  text-decoration: none;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: 
-    border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.process-arrow-btn:hover {
-  border-color: #0084ff;
-  background: rgba(0, 132, 255, 0.16);
-  box-shadow: 0 0 24px rgba(0, 132, 255, 0.45);
-  transform: translate(2px, -2px);
-  color: #38bdf8;
-}
-
-.process-arrow-caption {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  line-height: 1.35;
-  color: #64748b;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  user-select: none;
 }
 
 /* =========================================
