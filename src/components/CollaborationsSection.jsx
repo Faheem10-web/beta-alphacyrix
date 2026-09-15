@@ -1,148 +1,194 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 
 export default function CollaborationsSection() {
   const sectionRef = useRef(null);
+  const stageRef = useRef(null);
+  const cardElementsRef = useRef([]);
   const [isVisible, setIsVisible] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const scrollTargetRef = useRef(0);
-  const scrollCurrentRef = useRef(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Animation & Drag state refs (no re-renders for buttery 60/120fps)
+  const scrollPosRef = useRef(0);
+  const isPausedRef = useRef(false);
+  const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragVelocityRef = useRef(0);
+  const lastDragTimeRef = useRef(0);
   const rafIdRef = useRef(null);
+  const stageWidthRef = useRef(1200);
 
-  // 6 Client Logos matching user specification
-  const clients = [
-    {
-      id: 'rivontech',
-      name: 'RivonTech',
-      tagline: 'SMART SOLUTIONS',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Stylized Modern Angular R */}
-          <path
-            d="M6 5H18C22.4 5 25 7.6 25 11.5C25 14.8 22.8 17.2 19.5 17.8L26 27H20.2L14.2 18.5H11.5V27H6V5ZM11.5 14H17.5C19.6 14 20.8 12.8 20.8 11.2C20.8 9.6 19.6 8.5 17.5 8.5H11.5V14Z"
-            fill="currentColor"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: 'globexia',
-      name: 'Globexia',
-      tagline: 'DIGITAL COMMERCE',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Sliced Wave Sphere */}
-          <circle cx="16" cy="16" r="13" stroke="currentColor" strokeWidth="2" strokeOpacity="0.3" />
-          <path
-            d="M4.5 12C8 10 13 9.5 18 10.5C23 11.5 26.5 14 27.5 16"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-          />
-          <path
-            d="M3.5 16.5C7.5 14.5 13 14 19 15C24.5 16 27.5 19 28.5 21"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-          />
-          <path
-            d="M6 21C9.5 19.5 14.5 19 19.5 20C23.5 20.8 25.5 22.5 26 24"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: 'altura',
-      name: 'Altura',
-      tagline: 'TECHNOLOGIES',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Dual Peak Chevrons: Left Translucent, Right Solid */}
-          <path
-            d="M10.5 26L3 26L11.5 6L16 16.5L10.5 26Z"
-            fill="currentColor"
-            fillOpacity="0.38"
-          />
-          <path
-            d="M20.5 26L13.5 26L22 6L29 26H23.5L22 22.5H16.5L18.5 18H20L20.5 26Z"
-            fill="currentColor"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: 'novexa',
-      name: 'Novexa',
-      tagline: 'BUSINESS SOLUTIONS',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Interlocking Link Infinity Mark */}
-          <rect
-            x="5.5"
-            y="13"
-            width="14"
-            height="7"
-            rx="3.5"
-            transform="rotate(-35 5.5 13)"
-            stroke="currentColor"
-            strokeWidth="2.6"
-            strokeLinecap="round"
-          />
-          <rect
-            x="14.5"
-            y="19"
-            width="14"
-            height="7"
-            rx="3.5"
-            transform="rotate(-35 14.5 19)"
-            stroke="currentColor"
-            strokeWidth="2.6"
-            strokeLinecap="round"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: 'zentura',
-      name: 'Zentura',
-      tagline: 'HEALTH & LIFE',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Quarter Circle and Crescent Segment Mark */}
-          <path
-            d="M16 4C9.37 4 4 9.37 4 16C4 22.63 9.37 28 16 28V4Z"
-            fill="currentColor"
-            fillOpacity="0.4"
-          />
-          <path
-            d="M16 16H28C28 9.37 22.63 4 16 4V16Z"
-            fill="currentColor"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: 'lumora',
-      name: 'Lumora',
-      tagline: 'CREATIVE STUDIO',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Four-part Geometric Modernist Monogram */}
-          <rect x="5" y="5" width="8" height="8" rx="4" fill="currentColor" />
-          <path d="M15 5H21C24.3 5 27 7.7 27 11C27 14.3 24.3 17 21 17H15V5Z" fill="currentColor" />
-          <rect x="5" y="15" width="8" height="8" fill="currentColor" />
-          <path d="M15 19H23C23 23.4 19.4 27 15 27V19Z" fill="currentColor" fillOpacity="0.45" />
-        </svg>
-      ),
-    },
-  ];
+  // 5 Brand Definitions
+  const baseBrands = useMemo(
+    () => [
+      {
+        id: 'optic',
+        name: 'optic',
+        logo: (
+          <div className="brand-logo-optic">
+            <svg
+              className="brand-icon-optic"
+              width="38"
+              height="26"
+              viewBox="0 0 38 26"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="13" r="9.5" fill="#151733" stroke="#252a5c" strokeWidth="1.2" />
+              <circle cx="22" cy="13" r="9.5" fill="#1d4ed8" fillOpacity="0.7" />
+              <circle cx="22" cy="13" r="8.5" fill="url(#opticGradScroll)" />
+              <circle cx="17" cy="13" r="4.2" fill="#38bdf8" fillOpacity="0.85" filter="url(#opticGlowScroll)" />
+              <defs>
+                <radialGradient
+                  id="opticGradScroll"
+                  cx="0"
+                  cy="0"
+                  r="1"
+                  gradientUnits="userSpaceOnUse"
+                  gradientTransform="translate(22 13) scale(8.5)"
+                >
+                  <stop stopColor="#38bdf8" />
+                  <stop offset="0.6" stopColor="#2563eb" stopOpacity="0.8" />
+                  <stop offset="1" stopColor="#1e3a8a" stopOpacity="0.3" />
+                </radialGradient>
+                <filter id="opticGlowScroll" x="9" y="5" width="16" height="16" filterUnits="userSpaceOnUse">
+                  <feGaussianBlur stdDeviation="1.5" />
+                </filter>
+              </defs>
+            </svg>
+            <span className="brand-text-optic">optic</span>
+          </div>
+        ),
+      },
+      {
+        id: 'tomo',
+        name: 'TOMO',
+        logo: (
+          <div className="brand-logo-tomo">
+            <svg
+              className="brand-icon-tomo"
+              width="126"
+              height="28"
+              viewBox="0 0 126 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M4 4H26V9.2H17.8V24H12.2V9.2H4V4Z" fill="white" />
+              <rect x="31" y="4.5" width="22" height="19" rx="6" stroke="white" strokeWidth="5" />
+              <path
+                d="M58 4H64L71.5 16.5L79 4H85V24H79.8V12L73.2 22.5H69.8L63.2 12V24H58V4Z"
+                fill="white"
+              />
+              <rect x="90" y="4.5" width="22" height="19" rx="6" stroke="white" strokeWidth="5" />
+            </svg>
+          </div>
+        ),
+      },
+      {
+        id: 'dq',
+        name: 'DQ',
+        logo: (
+          <div className="brand-logo-dq">
+            <svg
+              className="brand-icon-dq"
+              width="88"
+              height="34"
+              viewBox="0 0 88 34"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 4H22C31 4 37 9.5 37 17C37 24.5 31 30 22 30H6V4ZM13.5 9.5V24.5H21.5C26.5 24.5 29.8 21.5 29.8 17C29.8 12.5 26.5 9.5 21.5 9.5H13.5Z"
+                fill="white"
+              />
+              <rect x="4" y="14.5" width="11" height="5" fill="#0b0b0e" />
+              <path
+                d="M48 4H64C73 4 79 9.5 79 17C79 21.5 76.5 25.5 72.8 27.8L80 34H72.5L67 29.5C66 29.8 65 30 64 30H48C39 30 33 24.5 33 17C33 9.5 39 4 48 4ZM49.5 9.5C44.5 9.5 41 12.5 41 17C41 21.5 44.5 24.5 49.5 24.5H62.5C67.5 24.5 71 21.5 71 17C71 12.5 67.5 9.5 62.5 9.5H49.5Z"
+                fill="white"
+              />
+              <rect x="42" y="14.5" width="11" height="5" fill="#0b0b0e" />
+            </svg>
+          </div>
+        ),
+      },
+      {
+        id: 'quantec',
+        name: 'Quantec',
+        logo: (
+          <div className="brand-logo-quantec">
+            <svg
+              className="brand-icon-quantec"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="15" cy="15" r="10.5" stroke="white" strokeWidth="3.2" strokeLinecap="round" />
+              <circle cx="15" cy="15" r="4.2" fill="white" />
+              <path d="M21 21L27 27" stroke="white" strokeWidth="3.4" strokeLinecap="round" />
+            </svg>
+            <span className="brand-text-quantec">Quantec</span>
+          </div>
+        ),
+      },
+      {
+        id: 'stellar',
+        name: 'stellar',
+        logo: (
+          <div className="brand-logo-stellar">
+            <svg
+              className="brand-icon-stellar"
+              width="28"
+              height="28"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g transform="translate(16, 16)">
+                <path
+                  d="M-2 -13C3 -13 6 -9 6 -5C6 -1 2 2 -2 2C-6 2 -7 -1 -7 -5C-7 -9 -4 -13 -2 -13Z"
+                  fill="white"
+                />
+                <path
+                  d="M13 -2C13 3 9 6 5 6C1 6 -2 2 -2 -2C-2 -6 1 -7 5 -7C9 -7 13 -4 13 -2Z"
+                  fill="white"
+                />
+                <path
+                  d="M2 13C-3 13 -6 9 -6 5C-6 1 -2 -2 2 -2C6 -2 7 1 7 5C7 9 4 13 2 13Z"
+                  fill="white"
+                />
+                <path
+                  d="M-13 2C-13 -3 -9 -6 -5 -6C-1 -6 2 -2 2 2C2 6 -1 7 -5 7C-9 7 -13 4 -13 2Z"
+                  fill="white"
+                />
+              </g>
+            </svg>
+            <span className="brand-text-stellar">stellar</span>
+          </div>
+        ),
+      },
+    ],
+    []
+  );
 
-  // Duplicate logos for seamless infinite horizontal loop
-  const displayClients = [...clients, ...clients, ...clients];
+  // 4 sets of 5 brands = 20 cards for seamless loop buffer
+  const totalCards = useMemo(() => {
+    return [
+      ...baseBrands.map((b) => ({ ...b, uid: `${b.id}-0` })),
+      ...baseBrands.map((b) => ({ ...b, uid: `${b.id}-1` })),
+      ...baseBrands.map((b) => ({ ...b, uid: `${b.id}-2` })),
+      ...baseBrands.map((b) => ({ ...b, uid: `${b.id}-3` })),
+    ];
+  }, [baseBrands]);
 
-  // Viewport entrance observation
+  // Card dimensions & spacing constants
+  const CARD_WIDTH = 228;
+  const CARD_GAP = 22;
+  const ITEM_STRIDE = CARD_WIDTH + CARD_GAP; // 250px
+  const TOTAL_WIDTH = totalCards.length * ITEM_STRIDE; // 5000px
+  const BASE_SPEED = 0.75; // px per frame at 60fps
+
+  // Intersection observer for section entrance
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -150,142 +196,188 @@ export default function CollaborationsSection() {
           setIsVisible(true);
         }
       },
-      {
-        threshold: 0.15,
-        rootMargin: '0px 0px -50px 0px',
-      }
+      { threshold: 0.1 }
     );
 
     const currentElem = sectionRef.current;
-    if (currentElem) {
-      observer.observe(currentElem);
-    }
+    if (currentElem) observer.observe(currentElem);
 
     return () => {
-      if (currentElem) {
-        observer.unobserve(currentElem);
-      }
+      if (currentElem) observer.unobserve(currentElem);
     };
   }, []);
 
-  // Subtle scroll parallax for the logo row with LERP interpolation
+  // Track stage container width for 3D projection calculations
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      // Calculate progress from when section approaches bottom to when it leaves top
-      if (rect.top < windowHeight && rect.bottom > 0) {
-        const totalDistance = windowHeight + rect.height;
-        const currentDistance = windowHeight - rect.top;
-        const progress = Math.max(0, Math.min(1, currentDistance / totalDistance));
-        // Subtle offset: max 70px translation across entire scroll
-        scrollTargetRef.current = (progress - 0.5) * -70;
+    const updateStageWidth = () => {
+      if (stageRef.current) {
+        stageWidthRef.current = stageRef.current.clientWidth;
       }
     };
 
-    const animateScrollParallax = () => {
-      const target = scrollTargetRef.current;
-      const current = scrollCurrentRef.current;
+    updateStageWidth();
+    window.addEventListener('resize', updateStageWidth, { passive: true });
+    return () => window.removeEventListener('resize', updateStageWidth);
+  }, []);
 
-      // Buttery smooth LERP dampening
-      scrollCurrentRef.current += (target - current) * 0.08;
-      setScrollProgress(scrollCurrentRef.current);
+  // Total width ref for drag wrapping consistency
+  const totalWidthRef = useRef(5000);
 
-      rafIdRef.current = requestAnimationFrame(animateScrollParallax);
+  // Main 3D Cylindrical Marquee Animation Loop
+  useEffect(() => {
+    const animate = () => {
+      const stageWidth = stageWidthRef.current;
+      const isMobile = stageWidth < 768;
+      const cardWidth = isMobile ? 160 : 216;
+      const cardGap = isMobile ? 24 : 44; // Generous 44px spacing between all cards
+      const itemStride = cardWidth + cardGap; // 260px stride
+      const totalWidth = totalCards.length * itemStride;
+      totalWidthRef.current = totalWidth;
+
+      const centerX = stageWidth / 2;
+      const arcRadius = Math.max(520, stageWidth * 0.58);
+
+      // If not paused or dragging, increment continuous drift
+      if (!isPausedRef.current && !isDraggingRef.current) {
+        scrollPosRef.current += BASE_SPEED;
+        if (scrollPosRef.current >= totalWidth) {
+          scrollPosRef.current -= totalWidth;
+        }
+      }
+
+      // Apply smooth drag inertia when released
+      if (!isDraggingRef.current && Math.abs(dragVelocityRef.current) > 0.05) {
+        scrollPosRef.current -= dragVelocityRef.current;
+        dragVelocityRef.current *= 0.92; // friction dampening
+        if (scrollPosRef.current < 0) scrollPosRef.current += totalWidth;
+        if (scrollPosRef.current >= totalWidth) scrollPosRef.current -= totalWidth;
+      }
+
+      // Project each card onto the 3D cylindrical arc in real time
+      for (let i = 0; i < totalCards.length; i++) {
+        const cardElem = cardElementsRef.current[i];
+        if (!cardElem) continue;
+
+        const rawX = i * itemStride - scrollPosRef.current;
+
+        // Wrap relative to center in [-totalWidth / 2, totalWidth / 2]
+        let relX = ((rawX - centerX + totalWidth / 2) % totalWidth + totalWidth) % totalWidth - totalWidth / 2;
+        const cardCenterX = centerX + relX;
+
+        // Normalized distance from center (-1 on left bound to +1 on right bound)
+        const normalized = relX / arcRadius;
+
+        // Cull cards that are far offstage
+        if (Math.abs(normalized) > 1.35) {
+          cardElem.style.visibility = 'hidden';
+          continue;
+        }
+
+        cardElem.style.visibility = 'visible';
+
+        // 3D Cylindrical curve geometry:
+        // Gentle, elegant 14-degree inward tilt that preserves wide spacing between all cards
+        const rotY = -normalized * 14;
+        const transZ = -Math.abs(normalized) * (isMobile ? 24 : 38);
+        const transY = Math.abs(normalized) * (isMobile ? 1.5 : 3);
+
+        cardElem.style.transform = `translate3d(${cardCenterX - cardWidth / 2}px, ${transY}px, ${transZ}px) rotateY(${rotY}deg)`;
+      }
+
+      rafIdRef.current = requestAnimationFrame(animate);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    rafIdRef.current = requestAnimationFrame(animateScrollParallax);
+    rafIdRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafIdRef.current) {
-        cancelAnimationFrame(rafIdRef.current);
-      }
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     };
-  }, []);
+  }, [totalCards.length, BASE_SPEED]);
+
+  // Pointer drag interactions (swipe / scrub)
+  const handlePointerDown = (e) => {
+    isDraggingRef.current = true;
+    setIsDragging(true);
+    dragStartXRef.current = e.clientX;
+    lastDragTimeRef.current = performance.now();
+    dragVelocityRef.current = 0;
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDraggingRef.current) return;
+    const currentX = e.clientX;
+    const deltaX = currentX - dragStartXRef.current;
+    dragStartXRef.current = currentX;
+
+    scrollPosRef.current -= deltaX;
+    const currentTotalWidth = totalWidthRef.current;
+    if (scrollPosRef.current < 0) scrollPosRef.current += currentTotalWidth;
+    if (scrollPosRef.current >= currentTotalWidth) scrollPosRef.current -= currentTotalWidth;
+
+    // Velocity tracking for inertia
+    const now = performance.now();
+    const dt = Math.max(1, now - lastDragTimeRef.current);
+    lastDragTimeRef.current = now;
+    dragVelocityRef.current = (deltaX / dt) * 12;
+  };
+
+  const handlePointerUp = () => {
+    isDraggingRef.current = false;
+    setIsDragging(false);
+  };
 
   return (
     <section
       ref={sectionRef}
-      className={`collab-section ${isVisible ? 'is-visible' : ''}`}
+      className={`collab-arc-section ${isVisible ? 'is-visible' : ''}`}
       id="collaborations"
-      aria-label="Trusted by Visionary Businesses"
+      aria-label="Trusted by 100+ companies"
     >
-      <div className="collab-container">
+      <div className="collab-arc-container">
         
-        {/* Top Header Row */}
-        <div className="collab-header">
-          <div className="collab-header-left">
-            <div className="collab-eyebrow">
-              <span className="collab-eyebrow-text">TRUSTED BY VISIONARY BUSINESSES</span>
-              <span className="collab-eyebrow-dot" aria-hidden="true"></span>
-              <span className="collab-eyebrow-line" aria-hidden="true"></span>
-            </div>
-            <h2 className="collab-title">
-              Building lasting partnerships<span className="title-dot">.</span>
-            </h2>
-          </div>
-
-          <div className="collab-header-right">
-            <a href="#case-studies" className="collab-case-link" id="collab-case-studies-link">
-              <span>View Case Studies</span>
-              <span className="collab-link-arrow" aria-hidden="true">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7 17L17 7M17 7H8M17 7V16"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-          </div>
+        {/* Centered Minimal Header */}
+        <div className="collab-arc-header">
+          <p className="collab-arc-eyebrow">
+            <span className="collab-eyebrow-light">Trusted by </span>
+            <span className="collab-eyebrow-accent">100+ companies</span>
+          </p>
         </div>
 
-        {/* Top Progressive Divider Line */}
-        <div className="collab-divider-line collab-divider-top" aria-hidden="true"></div>
-
-        {/* Horizontal Marquee & Parallax Logo Row */}
-        <div className="collab-marquee-wrapper" aria-label="Client company logos">
-          <div
-            className="collab-parallax-wrap"
-            style={{
-              transform: `translate3d(${scrollProgress}px, 0, 0)`,
-            }}
-          >
-            <div className="collab-track">
-              {displayClients.map((client, idx) => (
-                <div
-                  key={`${client.id}-${idx}`}
-                  className="collab-logo-item"
-                  style={{
-                    '--reveal-delay': `${0.06 * (idx % 6)}s`,
-                  }}
-                  tabIndex={0}
-                  role="img"
-                  aria-label={`${client.name} - ${client.tagline}`}
-                >
-                  <div className="collab-logo-mark" aria-hidden="true">
-                    {client.icon}
-                  </div>
-                  <div className="collab-logo-info">
-                    <span className="collab-logo-name">{client.name}</span>
-                    <span className="collab-logo-tagline">{client.tagline}</span>
+        {/* 3D Curved Cards Stage Wrap */}
+        <div
+          className={`collab-arc-stage-wrap ${isDragging ? 'is-dragging' : ''}`}
+          ref={stageRef}
+          onMouseEnter={() => {
+            isPausedRef.current = true;
+          }}
+          onMouseLeave={() => {
+            isPausedRef.current = false;
+          }}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+        >
+          <div className="collab-arc-stage scroll-mode">
+            {totalCards.map((brand, index) => (
+              <div
+                key={brand.uid}
+                ref={(el) => (cardElementsRef.current[index] = el)}
+                className="collab-arc-card scrolling-card"
+                tabIndex={0}
+                role="group"
+                aria-label={`${brand.name} logo`}
+              >
+                <div className="collab-arc-card-inner">
+                  <div className="collab-card-surface-glare" aria-hidden="true"></div>
+                  <div className="collab-card-logo-container">
+                    {brand.logo}
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Bottom Progressive Divider Line */}
-        <div className="collab-divider-line collab-divider-bottom" aria-hidden="true"></div>
 
       </div>
     </section>

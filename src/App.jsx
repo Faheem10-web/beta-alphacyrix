@@ -5,6 +5,7 @@ import ServiceCard from './components/ServiceCard';
 import ClientBadge from './components/ClientBadge';
 import CollaborationsSection from './components/CollaborationsSection';
 import ServicesSection from './components/ServicesSection';
+import ProcessSection from './components/ProcessSection';
 
 export default function App() {
   // Smooth mouse parallax state with LERP (Linear Interpolation)
@@ -272,6 +273,9 @@ export default function App() {
 
       {/* Services Section */}
       <ServicesSection />
+
+      {/* Our Work Process (The Methodology) Section */}
+      <ProcessSection />
 
       {/* Trusted Collaborations Section */}
       <CollaborationsSection />
