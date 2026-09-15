@@ -2490,6 +2490,230 @@ button {
 }
 
 /* =========================================
+   OUR CORE PILLARS (BUILT FOR EXCELLENCE)
+   ========================================= */
+.pillars-section {
+  position: relative;
+  z-index: 10;
+  padding: 100px 0 110px;
+  background-color: var(--bg-dark);
+  overflow: hidden;
+}
+
+.pillars-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 48px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Centered Header */
+.pillars-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pillars-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.pillars-eyebrow-line {
+  width: 28px;
+  height: 1.5px;
+  background: rgba(56, 189, 248, 0.4);
+  border-radius: 2px;
+}
+
+.pillars-eyebrow-text {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.pillars-title {
+  font-size: clamp(2.3rem, 4.2vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.pillars-title-accent {
+  color: #0070f3;
+  background: linear-gradient(135deg, #0070f3 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pillars-subtitle {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* 3 Equal Cards Row */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+/* Individual Pillar Card */
+.pillar-card {
+  position: relative;
+  background: linear-gradient(165deg, #0c1426 0%, #070c18 60%, #040812 100%);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  border-radius: 22px;
+  padding: 44px 34px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  overflow: hidden;
+}
+
+.pillar-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 20px 48px -15px rgba(0, 0, 0, 0.75),
+              0 0 28px -5px rgba(0, 112, 243, 0.18);
+}
+
+.pillar-card-top {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Numerical Label + Divider */
+.pillar-number-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 26px;
+}
+
+.pillar-number {
+  font-size: 15px;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+.pillar-divider-line {
+  width: 24px;
+  height: 2px;
+  background: #0070f3;
+  border-radius: 2px;
+  margin-top: 10px;
+}
+
+/* Headings & Descriptions */
+.pillar-heading {
+  font-size: clamp(1.45rem, 1.8vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+
+.pillar-description {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #8e9cb0;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Bottom Action Link */
+.pillar-card-bottom {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pillar-learn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.pillar-arrow {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+  color: #0070f3;
+}
+
+.pillar-learn-link:hover {
+  color: #ffffff;
+}
+
+.pillar-learn-link:hover .pillar-arrow {
+  color: #38bdf8;
+  transform: translateX(4px);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .pillars-section {
+    padding: 80px 0 90px;
+  }
+
+  .pillars-container {
+    padding: 0 32px;
+  }
+
+  .pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .pillar-card {
+    min-height: auto;
+    padding: 36px 28px 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .pillars-container {
+    padding: 0 20px;
+  }
+
+  .pillars-header {
+    margin-bottom: 40px;
+  }
+
+  .pillar-card {
+    padding: 30px 22px 28px;
+  }
+}
+
+/* =========================================
    TECHNICAL ECOSYSTEM SECTION
    ========================================= */
 .tech-ecosystem-section {

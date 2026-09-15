@@ -7,6 +7,7 @@ import CollaborationsSection from './components/CollaborationsSection';
 import ServicesSection from './components/ServicesSection';
 import TrustedBySection from './components/TrustedBySection';
 import ProcessSection from './components/ProcessSection';
+import CorePillarsSection from './components/CorePillarsSection';
 import TechnicalEcosystemSection from './components/TechnicalEcosystemSection';
 import FaqSection from './components/FaqSection';
 import CtaSection from './components/CtaSection';
@@ -321,6 +322,9 @@ export default function App() {
 
       {/* Our Work Process (The Methodology) Section */}
       <ProcessSection />
+
+      {/* Built for Excellence (Core Pillars) Section */}
+      <CorePillarsSection />
 
       {/* Technical Ecosystem Section */}
       <TechnicalEcosystemSection />
