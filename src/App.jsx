@@ -316,9 +316,6 @@ export default function App() {
       {/* Services Section */}
       <ServicesSection />
 
-      {/* Trusted By (2x2 Project Showcase) Section */}
-      <TrustedBySection />
-
       {/* Trusted Collaborations (Trusted by 100+ companies) Section */}
       <CollaborationsSection />
 
@@ -327,6 +324,9 @@ export default function App() {
 
       {/* Technical Ecosystem Section */}
       <TechnicalEcosystemSection />
+
+      {/* Featured Works (2x2 Project Showcase) Section */}
+      <TrustedBySection />
 
       {/* Frequently Asked Questions (FAQ) Section */}
       <FaqSection />

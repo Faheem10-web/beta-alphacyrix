@@ -1615,9 +1615,9 @@ button {
 }
 
 .trustedby-container {
-  max-width: 1440px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 48px;
+  padding: 0 54px;
   position: relative;
   z-index: 1;
 }
@@ -1653,9 +1653,9 @@ button {
 .trustedby-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  column-gap: 44px;
-  row-gap: 72px;
-  margin-top: 12px;
+  column-gap: 36px;
+  row-gap: 64px;
+  margin-top: 10px;
 }
 
 /* Individual Card - Borderless Clean Presentation */
