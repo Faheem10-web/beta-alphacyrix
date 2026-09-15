@@ -162,11 +162,16 @@ button {
 .navbar-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 48px;
+  padding: 18px 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   animation: navEntrance 1s var(--ease-out-cubic) forwards;
+  transition: padding 0.3s var(--ease-out-cubic);
+}
+
+.header-scrolled .navbar-container {
+  padding: 14px 48px;
 }
 
 /* Brand Logo */
@@ -187,7 +192,7 @@ button {
 }
 
 .brand-logo-img {
-  height: 32px;
+  height: 30px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -263,11 +268,11 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 28px;
+  padding: 11px 26px;
   border-radius: 9999px;
   background: linear-gradient(135deg, #0070f3 0%, #0099ff 100%);
   color: #ffffff;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 600;
   letter-spacing: -0.01em;
   box-shadow: none;
@@ -307,7 +312,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-top: 84px;
+  padding-top: 76px;
   padding-bottom: 24px;
   z-index: 10;
   overflow: hidden;
@@ -1170,7 +1175,7 @@ button {
   }
 
   .navbar-container {
-    padding: 20px 32px;
+    padding: 15px 32px;
   }
 
   .card-web {
@@ -1191,7 +1196,7 @@ button {
 
 @media (max-width: 992px) {
   .navbar-container {
-    padding: 18px 24px;
+    padding: 13px 24px;
   }
 
   .nav-links {
@@ -2325,6 +2330,642 @@ button {
   .process-card-inner {
     min-height: auto;
     padding: 32px 24px;
+  }
+}
+
+/* =========================================
+   TECHNICAL ECOSYSTEM SECTION
+   ========================================= */
+.tech-ecosystem-section {
+  position: relative;
+  background-color: var(--bg-dark);
+  padding: 130px 0 110px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.tech-bg-effects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.tech-ambient-glow {
+  position: absolute;
+  top: 20%;
+  right: 10%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 112, 243, 0.09) 0%,
+    rgba(0, 140, 255, 0.03) 40%,
+    transparent 70%
+  );
+  filter: blur(90px);
+  border-radius: 50%;
+}
+
+.tech-orbital-lines {
+  position: absolute;
+  top: 50%;
+  right: -8%;
+  transform: translateY(-50%);
+  width: 950px;
+  height: 650px;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.tech-ambient-dots .tech-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px #0070f3;
+  opacity: 0.4;
+}
+
+.tech-ambient-dots .dot-1 {
+  top: 25%;
+  right: 32%;
+  animation: floatDot 8s ease-in-out infinite;
+}
+
+.tech-ambient-dots .dot-2 {
+  bottom: 22%;
+  right: 15%;
+  animation: floatDot 10s ease-in-out infinite reverse;
+}
+
+.tech-ambient-dots .dot-3 {
+  top: 60%;
+  left: 45%;
+  animation: floatDot 7s ease-in-out infinite 1s;
+}
+
+@keyframes floatDot {
+  0%, 100% { transform: translateY(0); opacity: 0.3; }
+  50% { transform: translateY(-12px); opacity: 0.7; }
+}
+
+.tech-ecosystem-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 52px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* LEFT COLUMN */
+.tech-left-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.tech-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--text-tag);
+  margin-bottom: 20px;
+}
+
+.tech-eyebrow-line {
+  width: 24px;
+  height: 2px;
+  background-color: #0070f3;
+  border-radius: 2px;
+}
+
+.tech-headline {
+  font-size: clamp(2.6rem, 3.8vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.tech-headline-accent {
+  color: #0070f3;
+  background: linear-gradient(135deg, #0070f3 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tech-supporting-text {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: #8e9cb0;
+  max-width: 440px;
+  margin-bottom: 34px;
+}
+
+/* Feature Rows */
+.tech-feature-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 440px;
+}
+
+.tech-feature-row {
+  background: linear-gradient(180deg, #151a24 0%, #0e1218 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+  cursor: default;
+}
+
+.tech-feature-row:hover {
+  border-color: rgba(0, 112, 243, 0.4);
+  background: linear-gradient(180deg, #1c2230 0%, #121620 100%);
+  transform: translateX(4px);
+}
+
+.tech-feature-icon-box {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0070f3;
+}
+
+.tech-feature-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.tech-feature-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+}
+
+.tech-feature-desc {
+  font-size: 12.5px;
+  color: #748296;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tech-feature-arrow {
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.tech-feature-row:hover .tech-feature-arrow {
+  color: #0070f3;
+  transform: translateX(3px);
+}
+
+/* RIGHT COLUMN: CARDS GRID */
+.tech-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.tech-card {
+  background: linear-gradient(180deg, #141923 0%, #0d1118 100%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 22px;
+  padding: 30px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.35s var(--ease-out-cubic), 
+              border-color 0.35s ease, 
+              box-shadow 0.35s ease,
+              background 0.35s ease;
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.is-revealed .tech-card {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s var(--ease-out-cubic), 
+              transform 0.7s var(--ease-out-cubic),
+              border-color 0.35s ease, 
+              box-shadow 0.35s ease,
+              background 0.35s ease;
+}
+
+.is-revealed .tech-card:nth-child(1) { transition-delay: 0.1s; }
+.is-revealed .tech-card:nth-child(2) { transition-delay: 0.22s; }
+.is-revealed .tech-card:nth-child(3) { transition-delay: 0.34s; }
+
+.tech-card:hover,
+.tech-card.is-active {
+  background: linear-gradient(180deg, #1a2230 0%, #101520 100%);
+  border-color: rgba(0, 140, 255, 0.42);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px -5px rgba(0, 112, 243, 0.18);
+  transform: translateY(-4px);
+}
+
+/* Card Header */
+.tech-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.tech-card-icon-container {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0070f3;
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.tech-card:hover .tech-card-icon-container {
+  transform: scale(1.05);
+  border-color: rgba(0, 112, 243, 0.45);
+  background: rgba(0, 112, 243, 0.14);
+}
+
+.tech-card-num {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: 0.06em;
+}
+
+/* Card Body */
+.tech-card-body {
+  margin-bottom: 24px;
+}
+
+.tech-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.015em;
+  margin-bottom: 0;
+}
+
+/* Technology items grid */
+.tech-items-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 12px;
+  align-items: start;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.tech-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: transform 0.25s ease;
+  cursor: default;
+}
+
+.tech-item:hover {
+  transform: translateY(-2px);
+}
+
+.tech-item-icon-wrapper {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.tech-item:hover .tech-item-icon-wrapper {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(0, 112, 243, 0.4));
+}
+
+.tech-item-name {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #8e9cb0;
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease;
+}
+
+.tech-item:hover .tech-item-name {
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .tech-ecosystem-container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 0 36px;
+  }
+
+  .tech-left-col {
+    max-width: 600px;
+  }
+
+  .tech-feature-rows {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 860px) {
+  .tech-ecosystem-section {
+    padding: 80px 0 60px;
+  }
+
+  .tech-ecosystem-container {
+    padding: 0 24px;
+    gap: 40px;
+  }
+
+  .tech-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .tech-card {
+    padding: 26px 20px;
+  }
+
+  .tech-feature-rows {
+    max-width: 100%;
+  }
+
+  .tech-feature-row {
+    padding: 12px 14px;
+  }
+
+  .tech-feature-desc {
+    white-space: normal;
+  }
+}
+
+/* =========================================
+   FAQ SECTION (FREQUENTLY ASKED QUESTIONS)
+   ========================================= */
+.faq-section {
+  position: relative;
+  background-color: var(--bg-dark);
+  padding: 130px 0 140px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.faq-bg-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.faq-glow-radial {
+  display: none;
+}
+
+.faq-container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.faq-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.faq-title {
+  font-size: clamp(2.5rem, 4.4vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 0;
+}
+
+.faq-title-accent {
+  color: #0070f3;
+  background: linear-gradient(135deg, #0070f3 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* FAQ List */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Single FAQ Box */
+.faq-box {
+  background: linear-gradient(180deg, #131824 0%, #0d121c 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: none;
+  transition: border-color 0.3s ease, 
+              background 0.3s ease,
+              transform 0.3s var(--ease-out-cubic);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.is-revealed .faq-box {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s var(--ease-out-cubic), 
+              transform 0.6s var(--ease-out-cubic),
+              border-color 0.3s ease;
+}
+
+.is-revealed .faq-box:nth-child(1) { transition-delay: 0.1s; }
+.is-revealed .faq-box:nth-child(2) { transition-delay: 0.22s; }
+.is-revealed .faq-box:nth-child(3) { transition-delay: 0.34s; }
+
+.faq-box:hover {
+  border-color: rgba(0, 140, 255, 0.35);
+  box-shadow: none;
+}
+
+.faq-box.is-expanded {
+  border-color: rgba(0, 140, 255, 0.4);
+  box-shadow: none;
+  background: linear-gradient(180deg, #161d2b 0%, #0e1420 100%);
+}
+
+/* Question Button */
+.faq-question-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 28px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  gap: 20px;
+}
+
+.faq-question-text {
+  font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  transition: color 0.25s ease;
+}
+
+.faq-box:hover .faq-question-text {
+  color: #f8fafc;
+}
+
+/* Arrow Badge Button */
+.faq-arrow-badge {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  transition: background-color 0.3s ease, 
+              border-color 0.3s ease, 
+              color 0.3s ease, 
+              transform 0.3s var(--ease-out-cubic);
+}
+
+.faq-arrow-svg {
+  transition: transform 0.35s var(--ease-out-cubic);
+}
+
+.faq-box:hover .faq-arrow-badge {
+  border-color: rgba(0, 112, 243, 0.35);
+  background: rgba(0, 112, 243, 0.1);
+  color: #00d2ff;
+}
+
+/* When expanded, the arrow rotates from ↗ to ↘ */
+.faq-box.is-expanded .faq-arrow-badge {
+  background: rgba(0, 112, 243, 0.18);
+  border-color: rgba(0, 140, 255, 0.45);
+  color: #ffffff;
+}
+
+.faq-box.is-expanded .faq-arrow-svg {
+  transform: rotate(90deg);
+}
+
+/* Accordion Answer Content Container */
+.faq-answer-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-box.is-expanded .faq-answer-wrapper {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+}
+
+.faq-answer-text {
+  padding: 0 28px 26px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #94a3b8;
+  max-width: 820px;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .faq-section {
+    padding: 85px 0 75px;
+  }
+
+  .faq-container {
+    padding: 0 20px;
+  }
+
+  .faq-header {
+    margin-bottom: 40px;
+  }
+
+  .faq-question-btn {
+    padding: 20px 20px;
+    gap: 14px;
+  }
+
+  .faq-question-text {
+    font-size: 1.05rem;
+  }
+
+  .faq-arrow-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+
+  .faq-answer-text {
+    padding: 0 20px 22px;
+    font-size: 14px;
   }
 }
 

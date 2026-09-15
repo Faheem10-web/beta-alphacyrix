@@ -26,7 +26,7 @@ function Navbar() {
             src="/assets/logo.png"
             alt="Alphacyrix"
             className="brand-logo-img"
-            height="32"
+            height="30"
             width="auto"
             loading="eager"
           />

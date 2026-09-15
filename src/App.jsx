@@ -6,6 +6,8 @@ import ClientBadge from './components/ClientBadge';
 import CollaborationsSection from './components/CollaborationsSection';
 import ServicesSection from './components/ServicesSection';
 import ProcessSection from './components/ProcessSection';
+import TechnicalEcosystemSection from './components/TechnicalEcosystemSection';
+import FaqSection from './components/FaqSection';
 
 export default function App() {
   const heroContentRef = useRef(null);
@@ -316,6 +318,12 @@ export default function App() {
 
       {/* Our Work Process (The Methodology) Section */}
       <ProcessSection />
+
+      {/* Technical Ecosystem Section */}
+      <TechnicalEcosystemSection />
+
+      {/* Frequently Asked Questions (FAQ) Section */}
+      <FaqSection />
     </div>
   );
 }
