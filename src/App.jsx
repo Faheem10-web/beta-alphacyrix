@@ -274,11 +274,11 @@ export default function App() {
       {/* Services Section */}
       <ServicesSection />
 
+      {/* Trusted Collaborations (Trusted by 100+ companies) Section */}
+      <CollaborationsSection />
+
       {/* Our Work Process (The Methodology) Section */}
       <ProcessSection />
-
-      {/* Trusted Collaborations Section */}
-      <CollaborationsSection />
     </div>
   );
 }
