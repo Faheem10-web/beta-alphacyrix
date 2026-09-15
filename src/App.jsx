@@ -5,6 +5,7 @@ import ServiceCard from './components/ServiceCard';
 import ClientBadge from './components/ClientBadge';
 import CollaborationsSection from './components/CollaborationsSection';
 import ServicesSection from './components/ServicesSection';
+import TrustedBySection from './components/TrustedBySection';
 import ProcessSection from './components/ProcessSection';
 import TechnicalEcosystemSection from './components/TechnicalEcosystemSection';
 import FaqSection from './components/FaqSection';
@@ -314,6 +315,9 @@ export default function App() {
 
       {/* Services Section */}
       <ServicesSection />
+
+      {/* Trusted By (2x2 Project Showcase) Section */}
+      <TrustedBySection />
 
       {/* Trusted Collaborations (Trusted by 100+ companies) Section */}
       <CollaborationsSection />
