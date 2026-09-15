@@ -75,10 +75,6 @@ export default function ProcessSection() {
         {/* Header Row */}
         <div className="process-header">
           <div className="process-header-left">
-            <div className="process-eyebrow">
-              <span className="process-eyebrow-line" aria-hidden="true"></span>
-              <span className="process-eyebrow-text">THE METHODOLOGY</span>
-            </div>
             <h2 className="process-main-title">
               <span className="title-row">We Follow Our</span>
               <span className="title-row">
