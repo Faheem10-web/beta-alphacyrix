@@ -155,21 +155,7 @@ function ServicesSection() {
           ))}
         </div>
 
-        {/* Editorial Corner Accents matching reference layout */}
-        <div className="services-footer-accent" aria-hidden="true">
-          <div className="accent-left">
-            <span className="accent-code">// SERVICES</span>
-            <span className="accent-line"></span>
-          </div>
-          <div className="accent-right">
-            <span className="accent-line"></span>
-            <div className="accent-words">
-              <span>IDEAS</span>
-              <span>TECHNOLOGY</span>
-              <span>IMPACT</span>
-            </div>
-          </div>
-        </div>
+
 
       </div>
     </section>
