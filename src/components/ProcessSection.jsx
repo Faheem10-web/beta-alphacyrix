@@ -1,6 +1,37 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 
-export default function ProcessSection() {
+const processSteps = [
+  {
+    id: '01',
+    number: '01',
+    title: 'Discovery & Planning',
+    description:
+      'We understand your goals, requirements and audience to define a clear direction for the project.',
+  },
+  {
+    id: '02',
+    number: '02',
+    title: 'Design & Prototyping',
+    description:
+      'We transform ideas into thoughtful UI/UX experiences and interactive prototypes that bring the vision to life.',
+  },
+  {
+    id: '03',
+    number: '03',
+    title: 'Development & Delivery',
+    description:
+      'Our developers build fast, scalable and reliable digital solutions with attention to every detail.',
+  },
+  {
+    id: '04',
+    number: '04',
+    title: 'Launch & Growth',
+    description:
+      'We launch, monitor and continuously improve the product to support long-term business growth.',
+  },
+];
+
+function ProcessSection() {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activeCardId, setActiveCardId] = useState('02'); // Default featured card is 02
@@ -26,37 +57,6 @@ export default function ProcessSection() {
     };
   }, []);
 
-  const processSteps = [
-    {
-      id: '01',
-      number: '01',
-      title: 'Discovery & Planning',
-      description:
-        'We understand your goals, requirements and audience to define a clear direction for the project.',
-    },
-    {
-      id: '02',
-      number: '02',
-      title: 'Design & Prototyping',
-      description:
-        'We transform ideas into thoughtful UI/UX experiences and interactive prototypes that bring the vision to life.',
-    },
-    {
-      id: '03',
-      number: '03',
-      title: 'Development & Delivery',
-      description:
-        'Our developers build fast, scalable and reliable digital solutions with attention to every detail.',
-    },
-    {
-      id: '04',
-      number: '04',
-      title: 'Launch & Growth',
-      description:
-        'We launch, monitor and continuously improve the product to support long-term business growth.',
-    },
-  ];
-
   return (
     <section
       ref={sectionRef}
@@ -72,22 +72,14 @@ export default function ProcessSection() {
 
       <div className="process-container">
         
-        {/* Header Row */}
+        {/* Centered Header */}
         <div className="process-header">
-          <div className="process-header-left">
-            <h2 className="process-main-title">
-              <span className="title-row">We Follow Our</span>
-              <span className="title-row">
-                Work <span className="process-highlight">Process</span>
-              </span>
-            </h2>
-          </div>
-
-          <div className="process-header-right">
-            <p className="process-supporting-text">
-              A structured approach to turn ideas into impactful digital solutions, from concept to continuous improvement.
-            </p>
-          </div>
+          <h2 className="process-main-title">
+            <span className="title-row">We Follow Our</span>
+            <span className="title-row">
+              Work <span className="process-highlight">Process</span>
+            </span>
+          </h2>
         </div>
 
         {/* 4 Cards Horizontal Grid */}
@@ -150,26 +142,9 @@ export default function ProcessSection() {
           })}
         </div>
 
-        {/* Bottom Horizontal Bar */}
-        <div className="process-bottom-bar">
-          <div className="process-divider-line" aria-hidden="true"></div>
-          
-          <div className="process-bottom-content">
-            <div className="process-bottom-brand">
-              <span className="brand-name">ALPHACYRIX</span>
-              <span className="brand-dot" aria-hidden="true">.</span>
-            </div>
-
-            <div className="process-bottom-tagline">
-              <span className="tagline-blue-line" aria-hidden="true"></span>
-              <span className="tagline-text">
-                IDEAS <span className="slash">/</span> DESIGN <span className="slash">/</span> DEVELOPMENT <span className="slash">/</span> GROWTH
-              </span>
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
   );
 }
+
+export default memo(ProcessSection);

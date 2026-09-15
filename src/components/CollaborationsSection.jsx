@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, memo } from 'react';
 
-export default function CollaborationsSection() {
+function CollaborationsSection() {
   const sectionRef = useRef(null);
   const stageRef = useRef(null);
   const cardElementsRef = useRef([]);
@@ -188,15 +188,36 @@ export default function CollaborationsSection() {
   const TOTAL_WIDTH = totalCards.length * ITEM_STRIDE; // 5000px
   const BASE_SPEED = 0.75; // px per frame at 60fps
 
-  // Intersection observer for section entrance
+  // Viewport visibility ref to suspend rAF loop when offscreen
+  const isInViewRef = useRef(false);
+
+  // Helper functions to manage the animation loop
+  const startAnimationLoop = () => {
+    if (!rafIdRef.current && isInViewRef.current) {
+      rafIdRef.current = requestAnimationFrame(animate);
+    }
+  };
+
+  const stopAnimationLoop = () => {
+    if (rafIdRef.current) {
+      cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = null;
+    }
+  };
+
+  // Intersection observer for viewport entrance & animation pause/resume
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
+        isInViewRef.current = entry.isIntersecting;
         if (entry.isIntersecting) {
           setIsVisible(true);
+          startAnimationLoop();
+        } else {
+          stopAnimationLoop();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: '120px 0px 120px 0px' }
     );
 
     const currentElem = sectionRef.current;
@@ -204,6 +225,7 @@ export default function CollaborationsSection() {
 
     return () => {
       if (currentElem) observer.unobserve(currentElem);
+      stopAnimationLoop();
     };
   }, []);
 
@@ -224,73 +246,82 @@ export default function CollaborationsSection() {
   const totalWidthRef = useRef(5000);
 
   // Main 3D Cylindrical Marquee Animation Loop
-  useEffect(() => {
-    const animate = () => {
-      const stageWidth = stageWidthRef.current;
-      const isMobile = stageWidth < 768;
-      const cardWidth = isMobile ? 160 : 216;
-      const cardGap = isMobile ? 24 : 44; // Generous 44px spacing between all cards
-      const itemStride = cardWidth + cardGap; // 260px stride
-      const totalWidth = totalCards.length * itemStride;
-      totalWidthRef.current = totalWidth;
+  const animate = () => {
+    if (!isInViewRef.current) {
+      rafIdRef.current = null;
+      return;
+    }
 
-      const centerX = stageWidth / 2;
-      const arcRadius = Math.max(520, stageWidth * 0.58);
+    const stageWidth = stageWidthRef.current;
+    const isMobile = stageWidth < 768;
+    const cardWidth = isMobile ? 160 : 216;
+    const cardGap = isMobile ? 24 : 44; // Generous 44px spacing between all cards
+    const itemStride = cardWidth + cardGap; // 260px stride
+    const totalWidth = totalCards.length * itemStride;
+    totalWidthRef.current = totalWidth;
 
-      // If not paused or dragging, increment continuous drift
-      if (!isPausedRef.current && !isDraggingRef.current) {
-        scrollPosRef.current += BASE_SPEED;
-        if (scrollPosRef.current >= totalWidth) {
-          scrollPosRef.current -= totalWidth;
-        }
+    const centerX = stageWidth / 2;
+    const arcRadius = Math.max(520, stageWidth * 0.58);
+
+    // If not paused or dragging, increment continuous drift
+    if (!isPausedRef.current && !isDraggingRef.current) {
+      scrollPosRef.current += BASE_SPEED;
+      if (scrollPosRef.current >= totalWidth) {
+        scrollPosRef.current -= totalWidth;
+      }
+    }
+
+    // Apply smooth drag inertia when released
+    if (!isDraggingRef.current && Math.abs(dragVelocityRef.current) > 0.05) {
+      scrollPosRef.current -= dragVelocityRef.current;
+      dragVelocityRef.current *= 0.92; // friction dampening
+      if (scrollPosRef.current < 0) scrollPosRef.current += totalWidth;
+      if (scrollPosRef.current >= totalWidth) scrollPosRef.current -= totalWidth;
+    }
+
+    // Project each card onto the 3D cylindrical arc in real time
+    for (let i = 0; i < totalCards.length; i++) {
+      const cardElem = cardElementsRef.current[i];
+      if (!cardElem) continue;
+
+      const rawX = i * itemStride - scrollPosRef.current;
+
+      // Wrap relative to center in [-totalWidth / 2, totalWidth / 2]
+      let relX = ((rawX - centerX + totalWidth / 2) % totalWidth + totalWidth) % totalWidth - totalWidth / 2;
+      const cardCenterX = centerX + relX;
+
+      // Normalized distance from center (-1 on left bound to +1 on right bound)
+      const normalized = relX / arcRadius;
+
+      // Cull cards that are far offstage
+      if (Math.abs(normalized) > 1.35) {
+        cardElem.style.visibility = 'hidden';
+        continue;
       }
 
-      // Apply smooth drag inertia when released
-      if (!isDraggingRef.current && Math.abs(dragVelocityRef.current) > 0.05) {
-        scrollPosRef.current -= dragVelocityRef.current;
-        dragVelocityRef.current *= 0.92; // friction dampening
-        if (scrollPosRef.current < 0) scrollPosRef.current += totalWidth;
-        if (scrollPosRef.current >= totalWidth) scrollPosRef.current -= totalWidth;
-      }
+      cardElem.style.visibility = 'visible';
 
-      // Project each card onto the 3D cylindrical arc in real time
-      for (let i = 0; i < totalCards.length; i++) {
-        const cardElem = cardElementsRef.current[i];
-        if (!cardElem) continue;
+      // 3D Cylindrical curve geometry:
+      // Gentle, elegant 14-degree inward tilt that preserves wide spacing between all cards
+      const rotY = -normalized * 14;
+      const transZ = -Math.abs(normalized) * (isMobile ? 24 : 38);
+      const transY = Math.abs(normalized) * (isMobile ? 1.5 : 3);
 
-        const rawX = i * itemStride - scrollPosRef.current;
-
-        // Wrap relative to center in [-totalWidth / 2, totalWidth / 2]
-        let relX = ((rawX - centerX + totalWidth / 2) % totalWidth + totalWidth) % totalWidth - totalWidth / 2;
-        const cardCenterX = centerX + relX;
-
-        // Normalized distance from center (-1 on left bound to +1 on right bound)
-        const normalized = relX / arcRadius;
-
-        // Cull cards that are far offstage
-        if (Math.abs(normalized) > 1.35) {
-          cardElem.style.visibility = 'hidden';
-          continue;
-        }
-
-        cardElem.style.visibility = 'visible';
-
-        // 3D Cylindrical curve geometry:
-        // Gentle, elegant 14-degree inward tilt that preserves wide spacing between all cards
-        const rotY = -normalized * 14;
-        const transZ = -Math.abs(normalized) * (isMobile ? 24 : 38);
-        const transY = Math.abs(normalized) * (isMobile ? 1.5 : 3);
-
-        cardElem.style.transform = `translate3d(${cardCenterX - cardWidth / 2}px, ${transY}px, ${transZ}px) rotateY(${rotY}deg)`;
-      }
-
-      rafIdRef.current = requestAnimationFrame(animate);
-    };
+      cardElem.style.transform = `translate3d(${cardCenterX - cardWidth / 2}px, ${transY}px, ${transZ}px) rotateY(${rotY}deg)`;
+    }
 
     rafIdRef.current = requestAnimationFrame(animate);
+  };
 
+  useEffect(() => {
+    if (isInViewRef.current) {
+      rafIdRef.current = requestAnimationFrame(animate);
+    }
     return () => {
-      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
     };
   }, [totalCards.length, BASE_SPEED]);
 
@@ -383,3 +414,5 @@ export default function CollaborationsSection() {
     </section>
   );
 }
+
+export default memo(CollaborationsSection);

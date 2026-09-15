@@ -1,19 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 
-export default function Navbar() {
+const navItems = ['Home', 'Work', 'Services', 'About', 'Careers', 'Contact'];
+
+function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('Home');
 
-  const navItems = ['Home', 'Work', 'Services', 'About', 'Careers', 'Contact'];
-
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      const isPast = window.scrollY > 20;
+      setScrolled((prev) => (prev !== isPast ? isPast : prev));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -30,6 +27,8 @@ export default function Navbar() {
             alt="Alphacyrix"
             className="brand-logo-img"
             height="32"
+            width="auto"
+            loading="eager"
           />
         </a>
 
@@ -74,3 +73,5 @@ export default function Navbar() {
     </header>
   );
 }
+
+export default memo(Navbar);

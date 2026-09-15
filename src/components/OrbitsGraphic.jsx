@@ -1,15 +1,17 @@
 import { memo } from 'react';
 
 function OrbitsGraphic({ mouseOffset }) {
-  // mouseOffset is passed from parent to provide subtle parallax shift
-  const parallaxX = (mouseOffset?.x || 0) * 8;
-  const parallaxY = (mouseOffset?.y || 0) * 8;
+  // Supports direct prop fallback or CSS variables for zero re-render 60/120fps GPU parallax
+  const hasOffsetProp = mouseOffset && (mouseOffset.x !== 0 || mouseOffset.y !== 0);
+  const transformStyle = hasOffsetProp
+    ? `translate3d(${mouseOffset.x * 8}px, ${mouseOffset.y * 8}px, 0)`
+    : 'translate3d(calc(var(--mouse-x, 0) * 8px), calc(var(--mouse-y, 0) * 8px), 0)';
 
   return (
     <div 
       className="orbits-layer"
       style={{
-        transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
+        transform: transformStyle,
         transition: 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
       }}
       aria-hidden="true"
@@ -145,7 +147,9 @@ function OrbitsGraphic({ mouseOffset }) {
         className="plane-disc" 
         id="plane-disc-badge"
         style={{
-          transform: `translate3d(${parallaxX * 0.6}px, ${parallaxY * 0.6}px, 20px)`,
+          transform: hasOffsetProp
+            ? `translate3d(${mouseOffset.x * 4.8}px, ${mouseOffset.y * 4.8}px, 20px)`
+            : 'translate3d(calc(var(--mouse-x, 0) * 4.8px), calc(var(--mouse-y, 0) * 4.8px), 20px)',
         }}
       >
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

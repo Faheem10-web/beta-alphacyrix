@@ -1,15 +1,17 @@
 import { memo } from 'react';
 
 function ClientBadge({ mouseOffset }) {
-  const parallaxX = (mouseOffset?.x || 0) * 6;
-  const parallaxY = (mouseOffset?.y || 0) * 6;
+  const hasOffsetProp = mouseOffset && (mouseOffset.x !== 0 || mouseOffset.y !== 0);
+  const transformStyle = hasOffsetProp
+    ? `translate3d(${mouseOffset.x * 6}px, ${mouseOffset.y * 6}px, 0)`
+    : 'translate3d(calc(var(--mouse-x, 0) * 6px), calc(var(--mouse-y, 0) * 6px), 0)';
 
   return (
     <div
       className="client-badge"
       id="client-trust-badge"
       style={{
-        transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
+        transform: transformStyle,
       }}
       role="complementary"
       aria-label="Over 50 Happy Clients"

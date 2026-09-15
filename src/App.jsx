@@ -8,68 +8,108 @@ import ServicesSection from './components/ServicesSection';
 import ProcessSection from './components/ProcessSection';
 
 export default function App() {
-  // Smooth mouse parallax state with LERP (Linear Interpolation)
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
+  const heroContentRef = useRef(null);
+  const heroStageRef = useRef(null);
+
+  // Smooth mouse parallax with direct CSS variables (zero React re-renders)
   const mouseTargetRef = useRef({ x: 0, y: 0 });
   const mouseCurrentRef = useRef({ x: 0, y: 0 });
   const rafIdRef = useRef(null);
+  const isParallaxRunningRef = useRef(false);
 
   // Sibling cards dimming state
   const [isAnyCardHovered, setIsAnyCardHovered] = useState(false);
 
-  // Scroll effect on hero content
-  const [scrollY, setScrollY] = useState(0);
-
-  // Handle smooth mouse tracking
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      // Normalize mouse coordinates: -1 to 1 relative to center
-      const normX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-      const normY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-      mouseTargetRef.current = { x: normX, y: normY };
-    };
+  // Buttery 60/120fps mouse parallax loop via CSS custom properties
+  const startParallaxLoop = useCallback(() => {
+    if (isParallaxRunningRef.current) return;
+    isParallaxRunningRef.current = true;
 
     const animateParallax = () => {
-      // Smooth linear interpolation for buttery 60fps movement
+      // If hero has been scrolled out of view, pause loop
+      if (window.scrollY > 850) {
+        isParallaxRunningRef.current = false;
+        return;
+      }
+
       const target = mouseTargetRef.current;
       const current = mouseCurrentRef.current;
-      
-      current.x += (target.x - current.x) * 0.05;
-      current.y += (target.y - current.y) * 0.05;
 
-      setMouseOffset({ x: current.x, y: current.y });
+      const dx = target.x - current.x;
+      const dy = target.y - current.y;
+
+      // When resting close to target, settle and pause loop
+      if (Math.abs(dx) < 0.0002 && Math.abs(dy) < 0.0002) {
+        current.x = target.x;
+        current.y = target.y;
+        if (heroStageRef.current) {
+          heroStageRef.current.style.setProperty('--mouse-x', current.x.toFixed(4));
+          heroStageRef.current.style.setProperty('--mouse-y', current.y.toFixed(4));
+        }
+        isParallaxRunningRef.current = false;
+        return;
+      }
+
+      current.x += dx * 0.05;
+      current.y += dy * 0.05;
+
+      if (heroStageRef.current) {
+        heroStageRef.current.style.setProperty('--mouse-x', current.x.toFixed(4));
+        heroStageRef.current.style.setProperty('--mouse-y', current.y.toFixed(4));
+      }
+
       rafIdRef.current = requestAnimationFrame(animateParallax);
     };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     rafIdRef.current = requestAnimationFrame(animateParallax);
+  }, []);
+
+  // Handle mousemove to wake up parallax loop
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const normX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+      const normY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+      mouseTargetRef.current = { x: normX, y: normY };
+      startParallaxLoop();
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    startParallaxLoop();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     };
-  }, []);
+  }, [startParallaxLoop]);
 
-  // Handle scroll tracking for natural hero fade & lift
+  // Handle scroll tracking with direct transform updates (zero React re-renders)
   useEffect(() => {
+    let scrollTicking = false;
+
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      if (!scrollTicking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          if (heroContentRef.current && y <= 850) {
+            heroContentRef.current.style.transform = `translate3d(0, -${(y * 0.22).toFixed(1)}px, 0)`;
+            heroContentRef.current.style.opacity = Math.max(0, 1 - y / 650).toFixed(3);
+          }
+          if (y <= 850 && !isParallaxRunningRef.current) {
+            startParallaxLoop();
+          }
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [startParallaxLoop]);
 
   const handleCardHoverChange = useCallback((hovered) => {
     setIsAnyCardHovered(hovered);
   }, []);
-
-  // Parallax transform calculation for hero content on scroll
-  const heroContentStyle = {
-    transform: `translate3d(0, -${scrollY * 0.22}px, 0)`,
-    opacity: Math.max(0, 1 - scrollY / 650),
-    transition: 'transform 0.05s linear, opacity 0.05s linear',
-  };
 
   return (
     <div className="app-root" id="home">
@@ -89,7 +129,7 @@ export default function App() {
         <section className="hero-container" aria-label="Hero Introduction">
           
           {/* Hero Left Content Column */}
-          <div className="hero-content" style={heroContentStyle}>
+          <div className="hero-content" ref={heroContentRef}>
             {/* Tag / Category */}
             <div className="hero-tag">
               <span className="hero-tag-dash" aria-hidden="true"></span>
@@ -139,9 +179,9 @@ export default function App() {
           </div>
 
           {/* Hero Right Visual Stage */}
-          <div className="hero-stage" aria-hidden="false">
+          <div className="hero-stage" ref={heroStageRef} aria-hidden="false">
             {/* Background Orbital Rings & Nodes */}
-            <OrbitsGraphic mouseOffset={mouseOffset} />
+            <OrbitsGraphic />
 
             {/* Cards Composition Cluster */}
             <div className={`cards-cluster ${isAnyCardHovered ? 'has-hover' : ''}`}>
@@ -153,7 +193,6 @@ export default function App() {
                 title="Web Development"
                 subtitle="Scalable & Secure Web Solutions"
                 depthFactor={0.8}
-                mouseOffset={mouseOffset}
                 onHoverChange={handleCardHoverChange}
                 icon={
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -192,7 +231,6 @@ export default function App() {
                 title="App Development"
                 subtitle="Powerful Mobile Experiences"
                 depthFactor={1.25}
-                mouseOffset={mouseOffset}
                 onHoverChange={handleCardHoverChange}
                 icon={
                   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -229,7 +267,6 @@ export default function App() {
                 title="Digital Marketing"
                 subtitle="Strategies that Drive Growth"
                 depthFactor={1.05}
-                mouseOffset={mouseOffset}
                 onHoverChange={handleCardHoverChange}
                 icon={
                   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -265,7 +302,7 @@ export default function App() {
               />
 
               {/* Client Trust Badge */}
-              <ClientBadge mouseOffset={mouseOffset} />
+              <ClientBadge />
             </div>
           </div>
         </section>

@@ -1,6 +1,6 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, memo } from 'react';
 
-export default function ServiceCard({
+function ServiceCard({
   id,
   className = '',
   title,
@@ -42,14 +42,17 @@ export default function ServiceCard({
     if (onHoverChange) onHoverChange(false);
   }, [onHoverChange]);
 
-  // Global mouse parallax offset
-  const parallaxX = (mouseOffset?.x || 0) * (depthFactor * 10);
-  const parallaxY = (mouseOffset?.y || 0) * (depthFactor * 10);
+  // Global mouse parallax offset supporting CSS variables for zero-render 60/120fps
+  const hasOffsetProp = mouseOffset && (mouseOffset.x !== 0 || mouseOffset.y !== 0);
+  const factor = depthFactor * 10;
 
-  // Combine floating, parallax, and hover tilt
-  const transformStyle = isHovered
-    ? `translate3d(${parallaxX}px, ${parallaxY - 8}px, 30px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(1.02)`
-    : `translate3d(${parallaxX}px, ${parallaxY}px, 0px) rotateX(0deg) rotateY(0deg)`;
+  const transformStyle = hasOffsetProp
+    ? (isHovered
+        ? `translate3d(${mouseOffset.x * factor}px, ${mouseOffset.y * factor - 8}px, 30px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(1.02)`
+        : `translate3d(${mouseOffset.x * factor}px, ${mouseOffset.y * factor}px, 0px) rotateX(0deg) rotateY(0deg)`)
+    : (isHovered
+        ? `translate3d(calc(var(--mouse-x, 0) * ${factor}px), calc(var(--mouse-y, 0) * ${factor}px - 8px), 30px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(1.02)`
+        : `translate3d(calc(var(--mouse-x, 0) * ${factor}px), calc(var(--mouse-y, 0) * ${factor}px), 0px) rotateX(0deg) rotateY(0deg)`);
 
   return (
     <div
@@ -99,3 +102,5 @@ export default function ServiceCard({
     </div>
   );
 }
+
+export default memo(ServiceCard);
